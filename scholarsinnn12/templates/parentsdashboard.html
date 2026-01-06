@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parent Dashboard - ScholarsInn</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        :root {
+            --primary: #4e73df;
+            --secondary: #1cc88a;
+            --tertiary: #36b9cc;
+            --danger: #e74a3b;
+            --warning: #f6c23e;
+            --dark: #5a5c69;
+            --light: #f8f9fc;
+        }
+        
+        body {
+            background-color: #f8f9fc;
+            font-family: 'Nunito', sans-serif;
+        }
+        
+        .dashboard-container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+        
+        .dashboard-header {
+            padding: 25px 0;
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #36b9cc 0%, #258391 100%);
+            color: white;
+            box-shadow: 0 4px 20px rgba(54, 185, 204, 0.3);
+        }
+        
+        .dashboard-title {
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        .dashboard-subtitle {
+            opacity: 0.8;
+            font-weight: 300;
+        }
+        
+        .profile-card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+        
+        .profile-pic {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid rgba(54, 185, 204, 0.2);
+            margin-bottom: 15px;
+        }
+        
+        .feature-card {
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            background-color: #ffffff;
+            transition: all 0.3s ease;
+            height: 100%;
+            margin-bottom: 25px;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 30px;
+            margin-bottom: 15px;
+            color: var(--tertiary);
+        }
+        
+        .feature-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .feature-desc {
+            color: #6c757d;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        .btn-feature {
+            border-radius: 8px;
+            padding: 8px 20px;
+            font-weight: 500;
+        }
+        
+        .attendance-status {
+            font-size: 14px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+        
+        .present {
+            background-color: rgba(28, 200, 138, 0.1);
+            color: var(--secondary);
+        }
+        
+        .absent {
+            background-color: rgba(231, 74, 59, 0.1);
+            color: var(--danger);
+        }
+        
+        .notice-card {
+            border-left: 4px solid var(--primary);
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: white;
+            border-radius: 8px;
+        }
+        
+        .notice-title {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .notice-date {
+            font-size: 12px;
+            color: #6c757d;
+        }
+        
+        .location-card {
+            border-left: 4px solid var(--secondary);
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: white;
+            border-radius: 8px;
+        }
+        
+        .shape {
+            position: absolute;
+            opacity: 0.4;
+        }
+        
+        .shape-1 {
+            bottom: -20px;
+            right: -20px;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .shape-2 {
+            top: -30px;
+            left: 20%;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 30px;
+            color: #6c757d;
+            font-size: 14px;
+        }
+        
+        .map-container {
+            height: 200px;
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-header {
+                padding: 20px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container dashboard-container">
+        <div class="dashboard-header text-center animate__animated animate__fadeIn">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <h1 class="dashboard-title">PARENT DASHBOARD</h1>
+            <p class="dashboard-subtitle mb-0">Monitoring your ward's hostel activities</p>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-4">
+                <div class="profile-card animate__animated animate__fadeInLeft">
+                    <div class="text-center">
+                        <img src="https://randomuser.me/api/portraits/men/45.jpg" class="profile-pic">
+                        <h4>Mr. Sharma</h4>
+                        <p class="text-muted">Parent of Rahul Sharma</p>
+                        
+                        <div class="d-flex justify-content-between mb-3">
+                            <div>
+                                <h6 class="mb-0">ST2023001</h6>
+                                <small class="text-muted">Ward's ID</small>
+                            </div>
+                            <div>
+                                <h6 class="mb-0">B-204</h6>
+                                <small class="text-muted">Room No.</small>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary btn-feature">
+                                <i class="fas fa-phone-alt me-2"></i>Contact Warden
+                            </button>
+                            <button class="btn btn-outline-secondary btn-feature">
+                                <i class="fas fa-bell me-2"></i>Notification Settings
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="feature-card animate__animated animate__fadeInLeft" style="animation-delay: 0.1s">
+                    <i class="fas fa-map-marker-alt feature-icon"></i>
+                    <h5 class="feature-title">Ward's Location</h5>
+                    <p class="feature-desc">View your ward's current location and movement history</p>
+                    
+                    <div class="map-container">
+                        <i class="fas fa-map-marked-alt" style="font-size: 40px; color: #6c757d;"></i>
+                    </div>
+                    
+                    <button class="btn btn-primary btn-feature w-100">
+                        <i class="fas fa-location-arrow me-2"></i>Track Location
+                    </button>
+                </div>
+            </div>
+            
+            <div class="col-md-8">
+                <div class="feature-card animate__animated animate__fadeInRight">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="feature-title mb-0">Ward's Attendance</h5>
+                        <a href="#" class="btn btn-sm btn-outline-primary">View Full Report</a>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between">
+                                    <span class="text-muted">Today's Status</span>
+                                    <span class="attendance-status present">Present</span>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span class="text-muted">Last Marked At</span>
+                                    <span class="fw-bold">8:15 AM</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between">
+                                    <span class="text-muted">Monthly Attendance</span>
+                                    <span class="fw-bold">92%</span>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span class="text-muted">Absent Days</span>
+                                    <span class="fw-bold">2</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="progress mb-3" style="height: 10px;">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 92%;" aria-valuenow="92" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    
+                    <small class="text-muted">Attendance for October 2025</small>
+                </div>
+                
+                <div class="feature-card animate__animated animate__fadeInRight" style="animation-delay: 0.1s">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="feature-title mb-0">Fee Status</h5>
+                        <a href="#" class="btn btn-sm btn-outline-primary">Payment History</a>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between">
+                                    <span class="text-muted">Current Month</span>
+                                    <span class="fw-bold">October 2025</span>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span class="text-muted">Status</span>
+                                    <span class="fw-bold text-success">Paid</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between">
+                                    <span class="text-muted">Amount</span>
+                                    <span class="fw-bold">₹8,500</span>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span class="text-muted">Due Date</span>
+                                    <span class="fw-bold">5th Nov 2025</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-success btn-feature w-100">
+                        <i class="fas fa-rupee-sign me-2"></i>Pay Now
+                    </button>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="feature-card animate__animated animate__fadeInRight" style="animation-delay: 0.2s">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="feature-title mb-0">Ward's Room Details</h5>
+                                <a href="#" class="btn btn-sm btn-outline-primary">View</a>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between">
+                                    <span class="text-muted">Room No.</span>
+                                    <span class="fw-bold">B-204</span>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span class="text-muted">Room Type</span>
+                                    <span class="fw-bold">AC Double Sharing</span>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span class="text-muted">Building</span>
+                                    <span class="fw-bold">Boys Hostel - Block B</span>
+                                </div>
+                            </div>
+                            
+                            <h6 class="feature-title">Roommate</h6>
+                            <div class="d-flex align-items-center">
+                                <img src="https://randomuser.me/api/portraits/men/45.jpg" width="40" height="40" class="rounded-circle me-2">
+                                <div>
+                                    <div class="fw-bold">Amit Patel</div>
+                                    <small class="text-muted">Computer Science</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="feature-card animate__animated animate__fadeInRight" style="animation-delay: 0.3s">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="feature-title mb-0">Notice Board</h5>
+                                <a href="#" class="btn btn-sm btn-outline-primary">View All</a>
+                            </div>
+                            
+                            <div class="notice-card">
+                                <h6 class="notice-title">Parent-Teacher Meeting</h6>
+                                <p class="mb-1">All parents are invited for the quarterly PTM on 15th Nov</p>
+                                <small class="notice-date">Posted: 28 Oct 2025</small>
+                            </div>
+                            
+                            <div class="notice-card">
+                                <h6 class="notice-title">Hostel Maintenance</h6>
+                                <p class="mb-1">Water supply will be interrupted on 30th Oct for maintenance</p>
+                                <small class="notice-date">Posted: 25 Oct 2025</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2025 ScholarsInn Hostel Management System</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

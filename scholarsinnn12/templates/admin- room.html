@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room Allotment - ScholarsInn</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        :root {
+            --primary: #4e73df;
+            --secondary: #1cc88a;
+            --danger: #e74a3b;
+            --warning: #f6c23e;
+            --dark: #5a5c69;
+            --light: #f8f9fc;
+        }
+        
+        body {
+            background-color: #f8f9fc;
+            font-family: 'Nunito', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            min-height: 100vh;
+            background: linear-gradient(180deg, #4e73df 0%, #224abe 100%);
+            color: white;
+            position: fixed;
+            left: 0;
+            top: 0;
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        
+        .sidebar-brand {
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-nav {
+            padding: 20px 0;
+        }
+        
+        .nav-item {
+            position: relative;
+        }
+        
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-link i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .topbar {
+            height: 70px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+        
+        .user-dropdown {
+            display: flex;
+            align-items: center;
+        }
+        
+        /* Room Allotment Specific Styles */
+        .dashboard-container {
+            max-width: 1400px;
+            margin: auto;
+            padding: 20px 0;
+        }
+        
+        .dashboard-header {
+            padding: 25px 0;
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+            color: white;
+            box-shadow: 0 4px 20px rgba(78, 115, 223, 0.3);
+        }
+        
+        .dashboard-title {
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        .dashboard-subtitle {
+            opacity: 0.8;
+            font-weight: 300;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+        
+        .card-header {
+            background-color: white;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 15px 15px 0 0 !important;
+            padding: 20px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            border-radius: 8px;
+            padding: 8px 20px;
+            font-weight: 500;
+        }
+        
+        .btn-success {
+            background-color: var(--secondary);
+            border-color: var(--secondary);
+            border-radius: 8px;
+            padding: 8px 20px;
+            font-weight: 500;
+        }
+        
+        .btn-warning {
+            background-color: var(--warning);
+            border-color: var(--warning);
+            border-radius: 8px;
+            padding: 8px 20px;
+            font-weight: 500;
+            color: white;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+            border-color: var(--danger);
+            border-radius: 8px;
+            padding: 8px 20px;
+            font-weight: 500;
+        }
+        
+        .table-responsive {
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        
+        .table {
+            margin-bottom: 0;
+        }
+        
+        .table thead th {
+            background-color: #f8f9fc;
+            border-bottom-width: 1px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .table tbody tr:hover {
+            background-color: rgba(78, 115, 223, 0.05);
+        }
+        
+        .badge {
+            padding: 6px 10px;
+            font-weight: 500;
+            border-radius: 8px;
+        }
+        
+        .badge-success {
+            background-color: rgba(28, 200, 138, 0.1);
+            color: var(--secondary);
+        }
+        
+        .badge-warning {
+            background-color: rgba(246, 194, 62, 0.1);
+            color: #f6c23e;
+        }
+        
+        .badge-danger {
+            background-color: rgba(231, 74, 59, 0.1);
+            color: var(--danger);
+        }
+        
+        .search-box {
+            position: relative;
+        }
+        
+        .search-box input {
+            padding-left: 40px;
+            border-radius: 8px;
+            border: 1px solid #e3e6f0;
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 12px;
+            color: #d1d3e2;
+        }
+        
+        .room-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-right: 10px;
+            background-color: #e0e6ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 18px;
+        }
+        
+        .action-btn {
+            width: 30px;
+            height: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin: 0 3px;
+            transition: all 0.3s;
+        }
+        
+        .action-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .modal-content {
+            border: none;
+            border-radius: 15px;
+        }
+        
+        .modal-header {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .form-control, .form-select {
+            border-radius: 8px;
+            padding: 10px 15px;
+            border: 1px solid #e3e6f0;
+        }
+        
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        
+        .shape {
+            position: absolute;
+            opacity: 0.4;
+        }
+        
+        .shape-1 {
+            bottom: -20px;
+            right: -20px;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .shape-2 {
+            top: -30px;
+            left: 20%;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 30px;
+            color: #6c757d;
+            font-size: 14px;
+        }
+        
+        .room-status {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        
+        .status-available {
+            background-color: var(--secondary);
+        }
+        
+        .status-occupied {
+            background-color: var(--danger);
+        }
+        
+        .status-maintenance {
+            background-color: var(--warning);
+        }
+        
+        .guest-badge {
+            background-color: rgba(78, 115, 223, 0.1);
+            color: var(--primary);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+                overflow: hidden;
+            }
+            
+            .sidebar-brand span {
+                display: none;
+            }
+            
+            .nav-link span {
+                display: none;
+            }
+            
+            .nav-link i {
+                margin-right: 0;
+                font-size: 1.2rem;
+            }
+            
+            .main-content {
+                margin-left: 70px;
+            }
+            
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start !important;
+            }
+            
+            .search-box {
+                margin-top: 15px;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <i class="fas fa-home me-2"></i>
+            <span>ScholarsInn</span>
+        </div>
+        <div class="sidebar-nav">
+            <div class="nav-item">
+                <a href="{% url 'dashboard' %}" class="nav-link">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="{% url 'dashboard' %}" class="nav-link">
+                    <i class="fas fa-fw fa-users"></i>
+                    <span>Student Management</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="{% url 'room_booking' %}" class="nav-link active">
+                    <i class="fas fa-fw fa-bed"></i>
+                    <span>Room Allotment</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="{% url 'notice_board' %}" class="nav-link">
+                    <i class="fas fa-fw fa-bullhorn"></i>
+                    <span>Notice Management</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="{% url 'mess_menu' %}" class="nav-link">
+                    <i class="fas fa-fw fa-utensils"></i>
+                    <span>Mess Management</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="{% url 'dashboard' %}" class="nav-link">
+                    <i class="fas fa-fw fa-bell"></i>
+                    <span>Complaint Handling</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="{% url 'dashboard' %}" class="nav-link">
+                    <i class="fas fa-fw fa-file-alt"></i>
+                    <span>Reports</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="{% url 'dashboard' %}" class="nav-link"></a>
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <!-- Topbar -->
+        <div class="topbar">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search..." class="form-control">
+            </div>
+            <div class="user-dropdown">
+                <span class="me-2">Admin User</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+
+        <!-- Room Allotment Content -->
+        <div class="container dashboard-container">
+            <div class="dashboard-header text-center animate__animated animate__fadeIn">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <h1 class="dashboard-title">ROOM ALLOTMENT</h1>
+                <p class="dashboard-subtitle mb-0">Manage room allocations, check-ins, and guest stays</p>
+            </div>
+            
+            <!-- Quick Stats Row -->
+            <div class="row mb-4 animate__animated animate__fadeInUp">
+                <div class="col-md-3">
+                    <div class="card stat-card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <div class="stat-value text-primary">142</div>
+                                    <div class="stat-label">Total Rooms</div>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-door-open stat-icon text-primary"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card stat-card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <div class="stat-value text-success">87</div>
+                                    <div class="stat-label">Available Rooms</div>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-check-circle stat-icon text-success"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card stat-card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <div class="stat-value text-danger">48</div>
+                                    <div class="stat-label">Occupied Rooms</div>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-user-friends stat-icon text-danger"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card stat-card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <div class="stat-value text-warning">7</div>
+                                    <div class="stat-label">Under Maintenance</div>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-tools stat-icon text-warning"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Room Management Card -->
+            <div class="card animate__animated animate__fadeInUp">
+                <div class="card-header">
+                    <h5 class="mb-0">Room Allocation Management</h5>
+                    <div class="d-flex">
+                        <div class="search-box me-3">
+                            <i class="fas fa-search"></i>
+                            <input type="text" class="form-control" placeholder="Search rooms..." id="roomSearchInput">
+                        </div>
+                        <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#allocateRoomModal">
+                            <i class="fas fa-user-plus me-2"></i>Allocate Room
+                        </button>
+                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#checkInGuestModal">
+                            <i class="fas fa-user-tag me-2"></i>Guest Check-In
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="roomsTable">
+                            <thead>
+                                <tr>
+                                    <th>Room No.</th>
+                                    <th>Type</th>
+                                    <th>Capacity</th>
+                                    <th>Status</th>
+                                    <th>Current Occupants</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="room-avatar">
+                                                <i class="fas fa-door-closed"></i>
+                                            </div>
+                                            <div>
+                                                <div class="fw-bold">A-101</div>
+                                                <div class="text-muted small">Block A</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>Single</td>
+                                    <td>1 Student</td>
+                                    <td>
+                                        <span class="room-status status-occupied"></span>
+                                        Occupied
+                                    </td>
+                                    <td>
+                                        <div>Rahul Sharma</div>
+                                        <div class="text-muted small">ST2023001</div>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary action-btn" title="View Details">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-warning action-btn" title="Deallocate">
+                                            <i class="fas fa-user-minus"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="room-avatar">
+                                                <i class="fas fa-door-open"></i>
+                                            </div>
+                                            <div>
+                                                <div class="fw-bold">B-204</div>
+                                                <div class="text-muted small">Block B</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>Double</td>
+                                    <td>2 Students</td>
+                                    <td>
+                                        <span class="room-status status-available"></span>
+                                        Available
+                                    </td>
+                                    <td>Empty</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary action-btn" title="View Details">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-success action-btn" title="Allocate">
+                                            <i class="fas fa-user-plus"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="room-avatar">
+                                                <i class="fas fa-door-closed"></i>
+                                            </div>
+                                            <div>
+                                                <div class="fw-bold">C-312</div>
+                                                <div class="text-muted small">Block C</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>Shared</td>
+                                    <td>4 Students</td>
+                                    <td>
+                                        <span class="room-status status-occupied"></span>
+                                        Occupied (3/4)
+                                    </td>
+                                    <td>
+                                        <div>Amit Kumar + 2</div>
+                                        <div class="text-muted small">3 Occupants</div>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary action-btn" title="View Details">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-success action-btn" title="Add Student">
+                                            <i class="fas fa-user-plus"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="room-avatar">
+                                                <i class="fas fa-door-closed"></i>
+                                            </div>
+                                            <div>
+                                                <div class="fw-bold">D-108</div>
+                                                <div class="text-muted small">Block D</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>Double</td>
+                                    <td>2 Students</td>
+                                    <td>
+                                        <span class="room-status status-occupied"></span>
+                                        Occupied
+                                        <span class="guest-badge">Guest</span>
+                                    </td>
+                                    <td>
+                                        <div>Neha Gupta + Guest</div>
+                                        <div class="text-muted small">ST2023004</div>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary action-btn" title="View Details">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-danger action-btn" title="Check-Out Guest">
+                                            <i class="fas fa-user-slash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="room-avatar">
+                                                <i class="fas fa-door-closed"></i>
+                                            </div>
+                                            <div>
+                                                <div class="fw-bold">E-205</div>
+                                                <div class="text-muted small">Block E</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>Single</td>
+                                    <td>1 Student</td>
+                                    <td>
+                                        <span class="room-status status-maintenance"></span>
+                                        Maintenance
+                                    </td>
+                                    <td>Unavailable</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary action-btn" title="View Details">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-secondary action-btn" title="Mark Available">
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer">
+                <p>© 2025 ScholarsInn Hostel Management System</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Allocate Room Modal -->
+    <div class="modal fade" id="allocateRoomModal" tabindex="-1" aria-labelledby="allocateRoomModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="allocateRoomModalLabel">Allocate Room to Student</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="allocateRoomForm">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="studentSelect" class="form-label">Select Student</label>
+                                <select class="form-select" id="studentSelect" required>
+                                    <option value="" selected disabled>Select Student</option>
+                                    <option value="ST2023001">Rahul Sharma (ST2023001)</option>
+                                    <option value="ST2023002">Priya Patel (ST2023002)</option>
+                                    <option value="ST2023003">Amit Kumar (ST2023003)</option>
+                                    <option value="ST2023004">Neha Gupta (ST2023004)</option>
+                                    <option value="ST2023005">Vikram Singh (ST2023005)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="roomSelect" class="form-label">Select Room</label>
+                                <select class="form-select" id="roomSelect" required>
+                                    <option value="" selected disabled>Select Room</option>
+                                    <option value="B-204">B-204 (Double, Available)</option>
+                                    <option value="C-312">C-312 (Shared, 3/4 Occupied)</option>
+                                    <option value="A-105">A-105 (Single, Available)</option>
+                                    <option value="D-201">D-201 (Double, Available)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="allocationDate" class="form-label">Allocation Date</label>
+                                <input type="date" class="form-control" id="allocationDate" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="duration" class="form-label">Duration</label>
+                                <select class="form-select" id="duration" required>
+                                    <option value="1">1 Semester</option>
+                                    <option value="2" selected>1 Academic Year</option>
+                                    <option value="3">Complete Course</option>
+                                    <option value="0">Custom</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="allocationNotes" class="form-label">Notes (Optional)</label>
+                            <textarea class="form-control" id="allocationNotes" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="allocateRoomBtn">Allocate Room</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Guest Check-In Modal -->
+    <div class="modal fade" id="checkInGuestModal" tabindex="-1" aria-labelledby="checkInGuestModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="checkInGuestModalLabel">Guest Check-In</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="guestCheckInForm">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="hostStudent" class="form-label">Host Student</label>
+                                <select class="form-select" id="hostStudent" required>
+                                    <option value="" selected disabled>Select Host Student</option>
+                                    <option value="ST2023001">Rahul Sharma (A-101)</option>
+                                    <option value="ST2023004">Neha Gupta (D-108)</option>
+                                    <option value="ST2023002">Priya Patel (A-105)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="guestName" class="form-label">Guest Name</label>
+                                <input type="text" class="form-control" id="guestName" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="guestRelation" class="form-label">Relation</label>
+                                <select class="form-select" id="guestRelation" required>
+                                    <option value="" selected disabled>Select Relation</option>
+                                    <option value="Parent">Parent</option>
+                                    <option value="Sibling">Sibling</option>
+                                    <option value="Relative">Relative</option>
+                                    <option value="Friend">Friend</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="guestPhone" class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="guestPhone" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="checkInDate" class="form-label">Check-In Date</label>
+                                <input type="datetime-local" class="form-control" id="checkInDate" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="checkOutDate" class="form-label">Check-Out Date</label>
+                                <input type="datetime-local" class="form-control" id="checkOutDate" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="guestAddress" class="form-label">Address</label>
+                            <textarea class="form-control" id="guestAddress" rows="2" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="guestIdProof" class="form-label">ID Proof Upload</label>
+                            <input type="file" class="form-control" id="guestIdProof" required>
+                            <small class="text-muted">Upload scanned copy of government ID (Max 2MB)</small>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success" id="checkInGuestBtn">Check-In Guest</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Room Details Modal -->
+    <div class="modal fade" id="roomDetailsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Room Details - <span id="roomDetailTitle">B-204</span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-4">
+                                <h6>Room Information</h6>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <span>Room Number:</span>
+                                        <span class="fw-bold" id="detailRoomNo">B-204</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <span>Block:</span>
+                                        <span class="fw-bold" id="detailBlock">Block B</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <span>Type:</span>
+                                        <span class="fw-bold" id="detailType">Double</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <span>Capacity:</span>
+                                        <span class="fw-bold" id="detailCapacity">2 Students</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <span>Status:</span>
+                                        <span class="fw-bold" id="detailStatus">Available</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <span>Last Maintenance:</span>
+                                        <span class="fw-bold" id="detailMaintenance">15 Jan 2025</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-4">
+                                <h6>Current Occupants</h6>
+                                <div id="occupantsList">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <div>
+                                            <div>Rahul Sharma</div>
+                                            <div class="text-muted small">ST2023001</div>
+                                        </div>
+                                        <div>
+                                            <span class="badge bg-primary">Primary</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h6>Allocation History</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Student</th>
+                                                <th>Period</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="allocationHistory">
+                                            <tr>
+                                                <td>Rahul Sharma</td>
+                                                <td>Aug 2024 - Present</td>
+                                                <td><span class="badge badge-success">Active</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal fade" id="confirmActionModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmActionTitle">Confirm Action</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="confirmActionBody">
+                    Are you sure

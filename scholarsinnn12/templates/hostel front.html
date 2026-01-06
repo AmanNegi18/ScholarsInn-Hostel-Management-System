@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScholarsInn - Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f5ff;
+            color: #333;
+        }
+        .header {
+            background: linear-gradient(135deg, #004080 0%, #002d5a 100%);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+        .header-logo {
+            display: inline-block;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #002d5a;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
+        .nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 5px;
+            background: #004080;
+            margin: 0 5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .nav a:hover {
+            background: #001a40;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .nav .user-info {
+            color: white;
+            font-weight: bold;
+        }
+        .nav .logout-btn {
+            padding: 10px 20px;
+            margin-left: 10px;
+            border: none;
+            border-radius: 5px;
+            background: #cc0000;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        .nav .logout-btn:hover {
+            background: #990000;
+            transform: translateY(-2px);
+        }
+        .container {
+            width: 80%;
+            max-width: 1000px;
+            margin: 30px auto 80px auto;
+            background: #fff;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            line-height: 1.6;
+        }
+        h2 {
+            color: #004080;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0ff;
+            margin-top: 30px;
+        }
+        p {
+            line-height: 1.7;
+            margin: 15px 0;
+            transition: background-color 0.3s;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        p:hover {
+            background-color: #f5f8ff;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .footer {
+            text-align: center;
+            padding: 15px;
+            background: linear-gradient(135deg, #002d5a 0%, #004080 100%);
+            color: white;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.1);
+        }
+        .highlight {
+            background-color: #faffbd;
+            border-left: 3px solid #ffd700;
+            padding-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <span class="header-logo">📚</span> ScholarsInn
+    </div>
+
+    <div class="nav">
+        <div class="nav-links">
+            <a href="{% url 'room_booking' %}">Hostel Booking</a>
+            <a href="{% url 'mess_menu' %}">Mess Menu</a>
+            <a href="{% url 'notice_board' %}">Notice Board</a>
+        </div>
+        <div class="user-info">
+            Hello, {{ request.user.username }}
+            <form method="POST" action="{% url 'logout' %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="logout-btn">Logout</button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="section">
+            <h2>General Guidelines</h2>
+            <p>1. Students must maintain discipline and follow hostel rules strictly.</p>
+            <p>2. Silence must be observed after 10:00 PM in hostel premises.</p>
+            <p class="highlight">3. Ragging is strictly prohibited. Any violation will lead to serious consequences.</p>
+            <p>4. Guests are not allowed to stay overnight without prior permission.</p>
+            <p>5. Hostel property must be maintained, and any damage will be fined.</p>
+        </div>
+
+        <div class="section">
+            <h2>Admission Process</h2>
+            <p>1. Fill out the online hostel application form through the official portal.</p>
+            <p>2. Submit required documents like ID proof, college admission letter, and payment receipt.</p>
+            <p>3. Await the confirmation email from hostel administration.</p>
+            <p>4. Report to the hostel warden for room allocation.</p>
+            <p>5. Complete biometric registration and receive the hostel ID card.</p>
+        </div>
+
+        <div class="section">
+            <h2>Facilities & Amenities</h2>
+            <p>1. Wi-Fi Availability – High-speed internet access with fair usage policy.</p>
+            <p>2. Laundry Services – Available daily from 8 AM to 8 PM at nominal charges.</p>
+            <p>3. Common Room – TV, table tennis, chess, and dedicated study spaces available.</p>
+            <p>4. Security Measures – 24/7 security, CCTV surveillance, and biometric entry system.</p>
+            <p>5. Medical Assistance – First aid available at reception and tie-ups with nearby hospitals.</p>
+        </div>
+    </div>
+
+    <div class="footer">&copy; 2025 College Hostel Management | ScholarsInn</div>
+</body>
+</html>

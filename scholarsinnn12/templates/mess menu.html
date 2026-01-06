@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScholarsInn - Mess Menu</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f5ff;
+            color: #333;
+        }
+        .header {
+            background: linear-gradient(135deg, #004080 0%, #002d5a 100%);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+        .header-logo {
+            display: inline-block;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        .nav {
+            text-align: center;
+            padding: 15px;
+            background: #002d5a;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
+        .nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 5px;
+            background: #004080;
+            margin: 0 5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .nav a:hover {
+            background: #001a40;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        /* Styles for login dropdown */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-button {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 5px;
+            background: #004080;
+            margin: 0 5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+        .dropdown-button:hover {
+            background: #001a40;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .dropdown-content a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            background: white;
+            margin: 0;
+            border-radius: 0;
+            text-align: left;
+            box-shadow: none;
+            border-bottom: 1px solid #eee;
+        }
+        .dropdown-content a:hover {
+            background-color: #f0f5ff;
+            transform: none;
+            box-shadow: none;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .dropdown:hover .dropdown-button {
+            background: #001a40;
+        }
+        .container {
+            width: 85%;
+            max-width: 1100px;
+            margin: 30px auto 80px auto;
+            background: #fff;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        h2 {
+            color: #004080;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0ff;
+            margin-top: 30px;
+        }
+        .timing-box {
+            display: inline-block;
+            background-color: #f5f8ff;
+            border-left: 4px solid #004080;
+            padding: 12px 20px;
+            margin: 10px 10px 10px 0;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+        }
+        .timing-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .timing-label {
+            font-weight: bold;
+            color: #004080;
+            margin-right: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: center;
+            border: 1px solid #e0e0ff;
+        }
+        th {
+            background: linear-gradient(135deg, #004080 0%, #002d5a 100%);
+            color: white;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f5f8ff;
+        }
+        tr:hover {
+            background-color: #e6efff;
+        }
+        .special-meal {
+            background-color: #fffadb;
+        }
+        .footer {
+            text-align: center;
+            padding: 15px;
+            background: linear-gradient(135deg, #002d5a 0%, #004080 100%);
+            color: white;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.1);
+        }
+        .food-emoji {
+            font-size: 18px;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <span class="header-logo">🍽️</span> ScholarsInn Mess
+    </div>
+    <div class="nav">
+        <div class="nav-links">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'room_booking' %}">Hostel Booking</a>
+            <a href="{% url 'notice_board' %}">Notice Board</a>
+        </div>
+        <div class="dropdown">
+            <button class="dropdown-button">Login ▼</button>
+            <div class="dropdown-content">
+                <a href="{% url 'student_login' %}">Student Login</a>
+                <a href="{% url 'parent_login' %}">Parent Login</a>
+                <a href="{% url 'admin_login' %}">Admin Login</a>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <h2>Mess Timings</h2>
+        <div class="timing-box">
+            <span class="timing-label">Breakfast:</span> 7:30 AM - 9:00 AM
+        </div>
+        <div class="timing-box">
+            <span class="timing-label">Lunch:</span> 12:30 PM - 2:00 PM
+        </div>
+        <div class="timing-box">
+            <span class="timing-label">Snacks:</span> 4:30 PM - 5:30 PM
+        </div>
+        <div class="timing-box">
+            <span class="timing-label">Dinner:</span> 7:30 PM - 9:00 PM
+        </div>
+        
+        <h2>Weekly Mess Menu</h2>
+        <table>
+            <tr>
+                <th>Day</th>
+                <th>Breakfast</th>
+                <th>Lunch</th>
+                <th>Dinner</th>
+            </tr>
+            <tr>
+                <td>Monday</td>
+                <td><span class="food-emoji">🥣</span> Idli & Sambhar</td>
+                <td><span class="food-emoji">🍛</span> Dal, Rice, Sabzi, Roti</td>
+                <td><span class="food-emoji">🧀</span> Paneer Curry, Rice, Roti</td>
+            </tr>
+            <tr>
+                <td>Tuesday</td>
+                <td><span class="food-emoji">🥞</span> Paratha & Curd</td>
+                <td><span class="food-emoji">🍲</span> Rajma, Rice, Roti</td>
+                <td><span class="food-emoji">🍚</span> Vegetable Biryani, Raita</td>
+            </tr>
+            <tr>
+                <td>Wednesday</td>
+                <td><span class="food-emoji">☕</span> Poha & Tea</td>
+                <td><span class="food-emoji">🥘</span> Chole, Rice, Roti</td>
+                <td><span class="food-emoji">🥔</span> Aloo Gobi, Rice, Roti</td>
+            </tr>
+            <tr>
+                <td>Thursday</td>
+                <td><span class="food-emoji">🥣</span> Upma & Chutney</td>
+                <td><span class="food-emoji">🍲</span> Sambhar, Rice, Roti</td>
+                <td><span class="food-emoji">🍛</span> Dal Makhani, Rice, Roti</td>
+            </tr>
+            <tr>
+                <td>Friday</td>
+                <td><span class="food-emoji">🍞</span> Bread & Butter</td>
+                <td><span class="food-emoji">🥗</span> Mix Veg, Rice, Roti</td>
+                <td><span class="food-emoji">🍲</span> Kadhi, Rice, Roti</td>
+            </tr>
+            <tr>
+                <td>Saturday</td>
+                <td><span class="food-emoji">🥮</span> Poori & Aloo Bhaji</td>
+                <td><span class="food-emoji">🍛</span> Dal Tadka, Rice, Roti</td>
+                <td><span class="food-emoji">🧀</span> Paneer Butter Masala, Rice, Roti</td>
+            </tr>
+            <tr class="special-meal">
+                <td>Sunday</td>
+                <td><span class="food-emoji">🥞</span> Dosa & Chutney</td>
+                <td><span class="food-emoji">🍱</span> Special Thali</td>
+                <td><span class="food-emoji">🍗</span> Chicken Curry (Non-Veg) / Veg Curry</td>
+            </tr>
+        </table>
+    </div>
+    <div class="footer">&copy; 2025 College Hostel Management | ScholarsInn</div>
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScholarsInn - Parent Registration</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f5ff;
+            color: #333;
+        }
+        .header {
+            background: linear-gradient(135deg, #004080 0%, #002d5a 100%);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+        .header-logo {
+            display: inline-block;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        .nav {
+            text-align: center;
+            padding: 15px;
+            background: #002d5a;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 5px;
+            background: #004080;
+            margin: 0 5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .nav a:hover {
+            background: #001a40;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            margin: 30px auto 80px auto;
+            background: #fff;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        h2 {
+            color: #004080;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0ff;
+            margin-top: 0;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #004080;
+        }
+        input[type="text"], 
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e0e0ff;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: all 0.3s;
+            box-sizing: border-box;
+        }
+        input:focus {
+            border-color: #004080;
+            box-shadow: 0 0 0 2px rgba(0, 64, 128, 0.2);
+            outline: none;
+        }
+        .register-btn {
+            background: linear-gradient(135deg, #004080 0%, #002d5a 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .register-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .login-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #004080;
+            font-size: 14px;
+        }
+        .login-link a {
+            color: #004080;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+        .footer {
+            text-align: center;
+            padding: 15px;
+            background: linear-gradient(135deg, #002d5a 0%, #004080 100%);
+            color: white;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.1);
+        }
+        .info-box {
+            background-color: #e7f3ff;
+            border-left: 4px solid #004080;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .info-box p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <span class="header-logo">👨‍👩‍👧‍👦</span> ScholarsInn Parent Registration
+    </div>
+    <div class="nav">
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'parent_login' %}">Login</a>
+    </div>
+    <div class="container">
+        <h2>Create Parent Account</h2>
+        
+        <div class="info-box">
+            <p><strong>Note:</strong> You will need your child's Student ID to complete registration.</p>
+            <p>After registration, you can monitor your child's hostel activities and fees.</p>
+        </div>
+        
+        <form method="POST">
+            {% csrf_token %}
+            
+            <h3 style="color: #004080; margin-bottom: 15px;">Parent Information</h3>
+            
+            <div class="form-group">
+                <label for="parent_name">Full Name</label>
+                <input type="text" id="parent_name" name="parent_name" placeholder="Enter your full name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="parent_email">Email</label>
+                <input type="email" id="parent_email" name="parent_email" placeholder="Enter your email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="parent_phone">Phone Number</label>
+                <input type="text" id="parent_phone" name="parent_phone" placeholder="Enter your phone number" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Create a password" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password2">Confirm Password</label>
+                <input type="password" id="password2" name="password2" placeholder="Confirm your password" required>
+            </div>
+            
+            <h3 style="color: #004080; margin-top: 30px; margin-bottom: 15px;">Student Information</h3>
+            
+            <div class="form-group">
+                <label for="student_id">Student ID / Roll Number</label>
+                <input type="text" id="student_id" name="student_id" placeholder="Enter your child's student ID" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="relation">Relationship</label>
+                <input type="text" id="relation" name="relation" placeholder="e.g., Father, Mother, Guardian" required>
+            </div>
+            
+            <button type="submit" class="register-btn">Register</button>
+        </form>
+        
+        <div class="login-link">
+            Already have an account? <a href="{% url 'parent_login' %}">Login Here</a>
+        </div>
+    </div>
+    <div class="footer">&copy; 2025 College Hostel Management | ScholarsInn</div>
+</body>
+</html>

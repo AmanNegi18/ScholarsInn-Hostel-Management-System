@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScholarsInn - Notice Board</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f5ff;
+            color: #333;
+        }
+        .header {
+            background: linear-gradient(135deg, #004080 0%, #002d5a 100%);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+        .header-logo {
+            display: inline-block;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        .nav {
+            text-align: center;
+            padding: 15px;
+            background: #002d5a;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
+        .nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 5px;
+            background: #004080;
+            margin: 0 5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .nav a:hover {
+            background: #001a40;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        /* Styles for login dropdown */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-button {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 5px;
+            background: #004080;
+            margin: 0 5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+        .dropdown-button:hover {
+            background: #001a40;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .dropdown-content a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            background: white;
+            margin: 0;
+            border-radius: 0;
+            text-align: left;
+            box-shadow: none;
+            border-bottom: 1px solid #eee;
+        }
+        .dropdown-content a:hover {
+            background-color: #f0f5ff;
+            transform: none;
+            box-shadow: none;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .dropdown:hover .dropdown-button {
+            background: #001a40;
+        }
+        .container {
+            width: 80%;
+            max-width: 900px;
+            margin: 30px auto 80px auto;
+            background: #fff;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        h2 {
+            color: #004080;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0ff;
+            margin-top: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .notice-board {
+            background-color: #f5f8ff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+        .notice {
+            background: #fff;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 5px solid #ffcc00;
+            border-radius: 5px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .notice:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+        .notice-title {
+            font-weight: bold;
+            color: #004080;
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+        .notice-date {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #f0f5ff;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            color: #666;
+        }
+        .notice-text {
+            line-height: 1.5;
+        }
+        .notice-urgent {
+            border-left-color: #ff3b30;
+            background-color: #fff9f9;
+        }
+        .notice-important {
+            border-left-color: #ff9500;
+            background-color: #fffaf0;
+        }
+        .notice-info {
+            border-left-color: #007aff;
+            background-color: #f0f7ff;
+        }
+        .footer {
+            text-align: center;
+            padding: 15px;
+            background: linear-gradient(135deg, #002d5a 0%, #004080 100%);
+            color: white;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <span class="header-logo">📋</span> ScholarsInn Notice Board
+    </div>
+    <div class="nav">
+        <div class="nav-links">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'room_booking' %}">Hostel Booking</a>
+            <a href="{% url 'mess_menu' %}">Mess Menu</a>
+        </div>
+        <div class="dropdown">
+            <button class="dropdown-button">Login ▼</button>
+            <div class="dropdown-content">
+                <a href="{% url 'student_login' %}">Student Login</a>
+                <a href="{% url 'parent_login' %}">Parent Login</a>
+                <a href="{% url 'admin_login' %}">Admin Login</a>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <h2>Latest Notices</h2>
+        <div class="notice-board">
+            <div class="notice notice-important">
+                <div class="notice-date">February 15, 2025</div>
+                <div class="notice-title">Mess Timing Updates</div>
+                <div class="notice-text">Mess timings have been updated. Please check the mess info page for details. The new timings will be effective from March 1, 2025.</div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">&copy; 2025 College Hostel Management | ScholarsInn</div>
+</body>
+</html>

@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - ScholarsInn</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        :root {
+            --primary: #4e73df;
+            --secondary: #1cc88a;
+            --tertiary: #36b9cc;
+            --danger: #e74a3b;
+            --warning: #f6c23e;
+            --dark: #5a5c69;
+            --light: #f8f9fc;
+        }
+        
+        body {
+            background-color: #f8f9fc;
+            font-family: 'Nunito', sans-serif;
+        }
+        
+        .dashboard-container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+        
+        .dashboard-header {
+            padding: 25px 0;
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+            color: white;
+            box-shadow: 0 4px 20px rgba(78, 115, 223, 0.3);
+        }
+        
+        .dashboard-title {
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        .dashboard-subtitle {
+            opacity: 0.8;
+            font-weight: 300;
+        }
+        
+        .feature-card {
+            padding: 25px 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            background-color: #ffffff;
+            transition: all 0.3s ease;
+            height: 100%;
+            border-bottom: 4px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.12);
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover::before {
+            width: 100%;
+            opacity: 0.1;
+        }
+        
+        .icon-wrapper {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-icon {
+            font-size: 28px;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-title {
+            font-weight: 600;
+            margin-bottom: 12px;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-desc {
+            color: #6c757d;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        .feature-link {
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-link::after {
+            content: '→';
+            margin-left: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-link:hover::after {
+            margin-left: 10px;
+        }
+        
+        /* Card color variations */
+        .blue-card::before { background-color: var(--primary); }
+        .blue-card .icon-wrapper { background-color: rgba(78, 115, 223, 0.1); }
+        .blue-card .feature-icon { color: var(--primary); }
+        .blue-card .feature-link { color: var(--primary); }
+        .blue-card:hover .icon-wrapper { background-color: var(--primary); }
+        .blue-card:hover .feature-icon { color: white; }
+        
+        .green-card::before { background-color: var(--secondary); }
+        .green-card .icon-wrapper { background-color: rgba(28, 200, 138, 0.1); }
+        .green-card .feature-icon { color: var(--secondary); }
+        .green-card .feature-link { color: var(--secondary); }
+        .green-card:hover .icon-wrapper { background-color: var(--secondary); }
+        .green-card:hover .feature-icon { color: white; }
+        
+        .teal-card::before { background-color: var(--tertiary); }
+        .teal-card .icon-wrapper { background-color: rgba(54, 185, 204, 0.1); }
+        .teal-card .feature-icon { color: var(--tertiary); }
+        .teal-card .feature-link { color: var(--tertiary); }
+        .teal-card:hover .icon-wrapper { background-color: var(--tertiary); }
+        .teal-card:hover .feature-icon { color: white; }
+        
+        .red-card::before { background-color: var(--danger); }
+        .red-card .icon-wrapper { background-color: rgba(231, 74, 59, 0.1); }
+        .red-card .feature-icon { color: var(--danger); }
+        .red-card .feature-link { color: var(--danger); }
+        .red-card:hover .icon-wrapper { background-color: var(--danger); }
+        .red-card:hover .feature-icon { color: white; }
+        
+        .yellow-card::before { background-color: var(--warning); }
+        .yellow-card .icon-wrapper { background-color: rgba(246, 194, 62, 0.1); }
+        .yellow-card .feature-icon { color: var(--warning); }
+        .yellow-card .feature-link { color: var(--warning); }
+        .yellow-card:hover .icon-wrapper { background-color: var(--warning); }
+        .yellow-card:hover .feature-icon { color: white; }
+        
+        .dark-card::before { background-color: var(--dark); }
+        .dark-card .icon-wrapper { background-color: rgba(90, 92, 105, 0.1); }
+        .dark-card .feature-icon { color: var(--dark); }
+        .dark-card .feature-link { color: var(--dark); }
+        .dark-card:hover .icon-wrapper { background-color: var(--dark); }
+        .dark-card:hover .feature-icon { color: white; }
+        
+        .stat-card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 25px;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            color: #6c757d;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .stat-icon {
+            font-size: 30px;
+            opacity: 0.8;
+        }
+        
+        .shape {
+            position: absolute;
+            opacity: 0.4;
+        }
+        
+        .shape-1 {
+            bottom: -20px;
+            right: -20px;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .shape-2 {
+            top: -30px;
+            left: 20%;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 30px;
+            color: #6c757d;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-header {
+                padding: 20px 0;
+            }
+            
+            .stat-card {
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container dashboard-container">
+        <div class="dashboard-header text-center animate__animated animate__fadeIn">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <h1 class="dashboard-title">SCHOLARSINN ADMIN</h1>
+            <p class="dashboard-subtitle mb-0">Hostel Management System</p>
+        </div>
+        
+        <div class="row mb-4 animate__animated animate__fadeInUp">
+            <div class="col-md-3">
+                <div class="stat-card d-flex justify-content-between">
+                    <div>
+                        <div class="stat-value text-primary">87%</div>
+                        <div class="stat-label">Occupancy</div>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-bed stat-icon text-primary"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card d-flex justify-content-between">
+                    <div>
+                        <div class="stat-value text-success">12</div>
+                        <div class="stat-label">New Requests</div>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-file-alt stat-icon text-success"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="stat-card d-flex justify-content-between">
+                    <div>
+                        <div class="stat-value text-warning">4</div>
+                        <div class="stat-label">Notices</div>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-bullhorn stat-icon text-warning"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-card blue-card animate__animated animate__fadeInUp">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-chart-line feature-icon"></i>
+                    </div>
+                    <h5 class="feature-title">Dashboard Overview</h5>
+                    <p class="feature-desc">View hostel occupancy, pending requests, and notices at a glance.</p>
+                    <a href="#" class="feature-link">Explore</a>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="feature-card green-card animate__animated animate__fadeInUp" style="animation-delay: 0.1s">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-users feature-icon"></i>
+                    </div>
+                    <h5 class="feature-title">Student Management</h5>
+                    <p class="feature-desc">Manage student details, add new residents or remove existing ones.</p>
+                    <a href="#" class="feature-link">Manage Students</a>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="feature-card teal-card animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-bed feature-icon"></i>
+                    </div>
+                    <h5 class="feature-title">Room Management</h5>
+                    <p class="feature-desc">Allocate or deallocate rooms and check real-time availability.</p>
+                    <a href="#" class="feature-link">Manage Rooms</a>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="feature-card red-card animate__animated animate__fadeInUp" style="animation-delay: 0.3s">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-bullhorn feature-icon"></i>
+                    </div>
+                    <h5 class="feature-title">Notice Management</h5>
+                    <p class="feature-desc">Post, edit, or delete important hostel notices and announcements.</p>
+                    <a href="#" class="feature-link">Manage Notices</a>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="feature-card yellow-card animate__animated animate__fadeInUp" style="animation-delay: 0.4s">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-utensils feature-icon"></i>
+                    </div>
+                    <h5 class="feature-title">Mess Management</h5>
+                    <p class="feature-desc">Update mess menu, manage mess timings and track attendance.</p>
+                    <a href="#" class="feature-link">Manage Mess</a>
+                </div>
+            </div>
+
+        
+            <div class="col-md-4">
+                <div class="feature-card blue-card animate__animated animate__fadeInUp" style="animation-delay: 0.6s">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-file-alt feature-icon"></i>
+                    </div>
+                    <h5 class="feature-title">Reports</h5>
+                    <p class="feature-desc">Generate attendance, fees, and maintenance reports with ease.</p>
+                    <a href="#" class="feature-link">View Reports</a>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="feature-card green-card animate__animated animate__fadeInUp" style="animation-delay: 0.7s">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-money-bill-wave feature-icon"></i>
+                    </div>
+                    <h5 class="feature-title">Fee Management</h5>
+                    <p class="feature-desc">Track fee payments, generate invoices and manage due dates.</p>
+                    <a href="#" class="feature-link">Manage Fees</a>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="feature-card teal-card animate__animated animate__fadeInUp" style="animation-delay: 0.8s">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-cog feature-icon"></i>
+                    </div>
+                    <h5 class="feature-title">Settings</h5>
+                    <p class="feature-desc">Configure system settings, user permissions and notifications.</p>
+                    <a href="#" class="feature-link">Configure</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2025 ScholarsInn Hostel Management System</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</script>
+</body>
+</html>

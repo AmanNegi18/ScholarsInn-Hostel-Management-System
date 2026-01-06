@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mess Management - ScholarsInn</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        /* Reuse all styles from student management */
+        :root {
+            --primary: #4e73df;
+            --secondary: #1cc88a;
+            --danger: #e74a3b;
+            --dark: #5a5c69;
+            --light: #f8f9fc;
+        }
+        
+        body {
+            background-color: #f8f9fc;
+            font-family: 'Nunito', sans-serif;
+        }
+        
+        .dashboard-container {
+            max-width: 1400px;
+            margin: auto;
+            padding: 20px;
+        }
+        
+        .dashboard-header {
+            padding: 25px 0;
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #f6c23e 0%, #dda20a 100%);
+            color: white;
+            box-shadow: 0 4px 20px rgba(246, 194, 62, 0.3);
+        }
+        
+        .dashboard-title {
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        .dashboard-subtitle {
+            opacity: 0.8;
+            font-weight: 300;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+        
+        .card-header {
+            background-color: white;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 15px 15px 0 0 !important;
+            padding: 20px;
+            font-weight: 600;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            border-radius: 8px;
+            padding: 8px 20px;
+            font-weight: 500;
+        }
+        
+        .btn-warning {
+            background-color: #f6c23e;
+            border-color: #f6c23e;
+            border-radius: 8px;
+            padding: 8px 20px;
+            font-weight: 500;
+            color: white;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+            border-color: var(--danger);
+            border-radius: 8px;
+            padding: 8px 20px;
+            font-weight: 500;
+        }
+        
+        .table-responsive {
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        
+        .table {
+            margin-bottom: 0;
+        }
+        
+        .table thead th {
+            background-color: #f8f9fc;
+            border-bottom-width: 1px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .table tbody tr:hover {
+            background-color: rgba(246, 194, 62, 0.05);
+        }
+        
+        .badge {
+            padding: 6px 10px;
+            font-weight: 500;
+            border-radius: 8px;
+        }
+        
+        .badge-success {
+            background-color: rgba(28, 200, 138, 0.1);
+            color: var(--secondary);
+        }
+        
+        .badge-warning {
+            background-color: rgba(246, 194, 62, 0.1);
+            color: #f6c23e;
+        }
+        
+        .badge-danger {
+            background-color: rgba(231, 74, 59, 0.1);
+            color: var(--danger);
+        }
+        
+        .search-box {
+            position: relative;
+        }
+        
+        .search-box input {
+            padding-left: 40px;
+            border-radius: 8px;
+            border: 1px solid #e3e6f0;
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 12px;
+            color: #d1d3e2;
+        }
+        
+        .action-btn {
+            width: 30px;
+            height: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin: 0 3px;
+            transition: all 0.3s;
+        }
+        
+        .action-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .modal-content {
+            border: none;
+            border-radius: 15px;
+        }
+        
+        .modal-header {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .form-control, .form-select {
+            border-radius: 8px;
+            padding: 10px 15px;
+            border: 1px solid #e3e6f0;
+        }
+        
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        
+        .shape {
+            position: absolute;
+            opacity: 0.4;
+        }
+        
+        .shape-1 {
+            bottom: -20px;
+            right: -20px;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .shape-2 {
+            top: -30px;
+            left: 20%;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 30px;
+            color: #6c757d;
+            font-size: 14px;
+        }
+        
+        .meal-card {
+            border-left: 4px solid #f6c23e;
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: white;
+            border-radius: 8px;
+        }
+        
+        .meal-time {
+            font-weight: 600;
+            color: #5a5c69;
+        }
+        
+        .meal-items {
+            margin-top: 8px;
+        }
+        
+        .meal-item {
+            display: inline-block;
+            margin-right: 10px;
+            margin-bottom: 5px;
+            padding: 5px 10px;
+            background-color: #f8f9fc;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-header {
+                padding: 20px 0;
+            }
+            
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start !important;
+            }
+            
+            .search-box {
+                margin-top: 15px;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container dashboard-container">
+        <div class="dashboard-header text-center animate__animated animate__fadeIn">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <h1 class="dashboard-title">MESS MENU MANAGEMENT</h1>
+            <p class="dashboard-subtitle mb-0">Manage Daily Meals and Special Feasts</p>
+        </div>
+        
+        <div class="card animate__animated animate__fadeInUp">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Weekly Menu Planner</h5>
+                <div class="d-flex">
+                    <div class="search-box me-3">
+                        <i class="fas fa-search"></i>
+                        <input type="text" class="form-control" placeholder="Search meals..." id="searchInput">
+                    </div>
+                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#addMenuModal">
+                        <i class="fas fa-plus me-2"></i>Add Menu
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <ul class="nav nav-tabs mb-4" id="daysTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="monday-tab" data-bs-toggle="tab" data-bs-target="#monday" type="button">Monday</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="tuesday-tab" data-bs-toggle="tab" data-bs-target="#tuesday" type="button">Tuesday</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="wednesday-tab" data-bs-toggle="tab" data-bs-target="#wednesday" type="button">Wednesday</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="thursday-tab" data-bs-toggle="tab" data-bs-target="#thursday" type="button">Thursday</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="friday-tab" data-bs-toggle="tab" data-bs-target="#friday" type="button">Friday</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="saturday-tab" data-bs-toggle="tab" data-bs-target="#saturday" type="button">Saturday</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="sunday-tab" data-bs-toggle="tab" data-bs-target="#sunday" type="button">Sunday</button>
+                    </li>
+                </ul>
+                
+                <div class="tab-content" id="daysTabContent">
+                    <!-- Monday Menu -->
+                    <div class="tab-pane fade show active" id="monday" role="tabpanel">
+                        <div class="meal-card">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h6 class="meal-time">Breakfast (7:30 AM - 9:00 AM)</h6>
+                                <div>
+                                    <button class="btn btn-sm btn-outline-primary action-btn" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger action-btn" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="meal-items">
+                                <span class="meal-item">Idli</span>
+                                <span class="meal-item">Sambar</span>
+                                <span class="meal-item">Coconut Chutney</span>
+                                <span class="meal-item">Coffee/Tea</span>
+                            </div>
+                        </div>
+                        
+                        <div class="meal-card">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h6 class="meal-time">Lunch (12:30 PM - 2:30 PM)</h6>
+                                <div>
+                                    <button class="btn btn-sm btn-outline-primary action-btn" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger action-btn" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="meal-items">
+                                <span class="meal-item">Jeera Rice</span>
+                                <span class="meal-item">Dal Tadka</span>
+                                <span class="meal-item">Paneer Butter Masala</span>
+                                <span class="meal-item">Salad</span>
+                                <span class="meal-item">Curd</span>
+                            </div>
+                        </div>
+                        
+                        <div class="meal-card">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h6 class="meal-time">Dinner (7:30 PM - 9:00 PM)</h6>
+                                <div>
+                                    <button class="btn btn-sm btn-outline-primary action-btn" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger action-btn" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="meal-items">
+                                <span class="meal-item">Chapati</span>
+                                <span class="meal-item">Mix Veg</span>
+                                <span class="meal-item">Dal Fry</span>
+                                <span class="meal-item">Pickle</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Other days would follow the same pattern -->
+                    <!-- Tuesday to Sunday tabs would contain similar structure -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Special Feasts Section -->
+        <div class="card animate__animated animate__fadeInUp">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Special Feasts & Events</h5>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFeastModal">
+                    <i class="fas fa-plus me-2"></i>Add Feast
+                </button>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="feastsTable">
+                        <thead>
+                            <tr>
+                                <th>Event Name</th>
+                                <th>Date</th>
+                                <th>Meal Time</th>
+                                <th>Menu Items</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Diwali Celebration</td>
+                                <td>12 Nov 2025</td>
+                                <td>Dinner</td>
+                                <td>
+                                    <span class="meal-item">Gulab Jamun</span>
+                                    <span class="meal-item">Puri</span>
+                                    <span class="meal-item">Chana Masala</span>
+                                </td>
+                                <td><span class="badge badge-success">Active</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary action-btn" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger action-btn" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Christmas Dinner</td>
+                                <td>25 Dec 2025</td>
+                                <td>Dinner</td>
+                                <td>
+                                    <span class="meal-item">Roast Chicken</span>
+                                    <span class="meal-item">Mashed Potatoes</span>
+                                    <span class="meal-item">Christmas Pudding</span>
+                                </td>
+                                <td><span class="badge badge-warning">Planned</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary action-btn" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger action-btn" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2025 ScholarsInn Hostel Management System</p>
+        </div>
+    </div>
+
+    <!-- Add Menu Modal -->
+    <div class="modal fade" id="addMenuModal" tabindex="-1" aria-labelledby="addMenuModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addMenuModalLabel">Add New Menu</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addMenuForm">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="menuDay" class="form-label">Day</label>
+                                <select class="form-select" id="menuDay" required>
+                                    <option value="" selected disabled>Select Day</option>
+                                    <option value="Monday">Monday</option>
+                                    <option value="Tuesday">Tuesday</option>
+                                    <option value="Wednesday">Wednesday</option>
+                                    <option value="Thursday">Thursday</option>
+                                    <option value="Friday">Friday</option>
+                                    <option value="Saturday">Saturday</option>
+                                    <option value="Sunday">Sunday</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="mealTime" class="form-label">Meal Time</label>
+                                <select class="form-select" id="mealTime" required>
+                                    <option value="" selected disabled>Select Meal Time</option>
+                                    <option value="Breakfast">Breakfast</option>
+                                    <option value="Lunch">Lunch</option>
+                                    <option value="Dinner">Dinner</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="menuItems" class="form-label">Menu Items (Comma separated)</label>
+                            <textarea class="form-control" id="menuItems" rows="3" placeholder="e.g., Idli, Sambar, Chutney" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="specialNotes" class="form-label">Special Notes</label>
+                            <textarea class="form-control" id="specialNotes" rows="2" placeholder="Optional notes..."></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-warning" id="saveMenuBtn">Save Menu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Feast Modal -->
+    <div class="modal fade" id="addFeastModal" tabindex="-1" aria-labelledby="addFeastModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addFeastModalLabel">Add Special Feast</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addFeastForm">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="feastName" class="form-label">Event Name</label>
+                                <input type="text" class="form-control" id="feastName" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="feastDate" class="form-label">Date</label>
+                                <input type="date" class="form-control" id="feastDate" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="feastMealTime" class="form-label">Meal Time</label>
+                                <select class="form-select" id="feastMealTime" required>
+                                    <option value="" selected disabled>Select Meal Time</option>
+                                    <option value="Breakfast">Breakfast</option>
+                                    <option value="Lunch">Lunch</option>
+                                    <option value="Dinner">Dinner</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="feastStatus" class="form-label">Status</label>
+                                <select class="form-select" id="feastStatus" required>
+                                    <option value="Active" selected>Active</option>
+                                    <option value="Planned">Planned</option>
+                                    <option value="Cancelled">Cancelled</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="feastItems" class="form-label">Menu Items (Comma separated)</label>
+                            <textarea class="form-control" id="feastItems" rows="3" placeholder="e.g., Biryani, Raita, Gulab Jamun" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="feastDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="feastDescription" rows="2" placeholder="Optional description..."></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveFeastBtn">Save Feast</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirm Deletion</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this item? This action cannot be undone.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Initialize DataTable for feasts
+            var feastsTable = $('#feastsTable').DataTable({
+                responsive: true,
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search feasts...",
+                }
+            });
+            
+            // Search functionality
+            $('#searchInput').keyup(function(){
+                feastsTable.search($(this).val()).draw();
+            });
+            
+            // Save menu button click
+            $('#saveMenuBtn').click(function() {
+                // Here you would typically send the data to your backend
+                alert('Menu saved successfully!');
+                $('#addMenuModal').modal('hide');
+                $('#addMenuForm')[0].reset();
+            });
+            
+            // Save feast button click
+            $('#saveFeastBtn').click(function() {
+                // Here you would typically send the data to your backend
+                alert('Feast saved successfully!');
+                $('#addFeastModal').modal('hide');
+                $('#addFeastForm')[0].reset();
+            });
+            
+            // Delete button click
+            $('.btn-outline-danger').click(function() {
+                $('#confirmDeleteModal').modal('show');
+            });
+            
+            // Confirm delete button click
+            $('#confirmDeleteBtn').click(function() {
+                // Here you would typically send a delete request to your backend
+                alert('Item deleted successfully!');
+                $('#confirmDeleteModal').modal('hide');
+            });
+        });
+    </script>
+</body>
+</html>

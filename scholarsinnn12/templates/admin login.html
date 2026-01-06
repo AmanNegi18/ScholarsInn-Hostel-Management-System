@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScholarsInn - Admin Login</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f5ff;
+            color: #333;
+        }
+        .header {
+            background: linear-gradient(135deg, #004080 0%, #002d5a 100%);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+        .header-logo {
+            display: inline-block;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        .nav {
+            text-align: center;
+            padding: 15px;
+            background: #002d5a;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
+        .nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 5px;
+            background: #004080;
+            margin: 0 5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .nav a:hover {
+            background: #001a40;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 30px auto 80px auto;
+            background: #fff;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            display: flex;
+        }
+        .login-panel {
+            flex: 1;
+            padding: 30px;
+            border-right: 1px solid #e0e0ff;
+        }
+        .features-panel {
+            flex: 1;
+            padding: 30px;
+        }
+        h2 {
+            color: #004080;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0ff;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        .login-form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #004080;
+        }
+        input[type="text"], 
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e0e0ff;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        input[type="text"]:focus, 
+        input[type="password"]:focus {
+            border-color: #004080;
+            box-shadow: 0 0 0 2px rgba(0, 64, 128, 0.2);
+            outline: none;
+        }
+        .login-btn {
+            background: linear-gradient(135deg, #004080 0%, #002d5a 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .features-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .feature-item {
+            margin-bottom: 20px;
+            background-color: #f5f8ff;
+            border-left: 4px solid #004080;
+            padding: 15px;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        .feature-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .feature-title {
+            font-weight: bold;
+            color: #004080;
+            margin-bottom: 8px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+        }
+        .feature-icon {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+        .feature-details {
+            padding-left: 30px;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        .feature-detail-item {
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+        .feature-detail-icon {
+            margin-right: 8px;
+            color: #004080;
+        }
+        .footer {
+            text-align: center;
+            padding: 15px;
+            background: linear-gradient(135deg, #002d5a 0%, #004080 100%);
+            color: white;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.1);
+        }
+        @media (max-width: 900px) {
+            .container {
+                flex-direction: column;
+            }
+            .login-panel {
+                border-right: none;
+                border-bottom: 1px solid #e0e0ff;
+                padding-bottom: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <span class="header-logo">👨‍💼</span> ScholarsInn Admin Portal
+    </div>
+    <div class="nav">
+        <div class="nav-links">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'room_booking' %}">Hostel Booking</a>
+            <a href="{% url 'mess_menu' %}">Mess Menu</a>
+            <a href="{% url 'notice_board' %}">Notice Board</a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="login-panel">
+            <h2>Admin Login</h2>
+            <div class="login-form">
+                <form method="POST" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="login-btn">Login</button>
+                </form>
+            </div>            
+        <div class="features-panel">
+            <h2>Admin Features</h2>
+            <ul class="features-list">
+                <li class="feature-item">
+                    <div class="feature-title">
+                        <span class="feature-icon">📊</span> Dashboard
+                    </div>
+                    <div class="feature-details">
+                        Overview of hostel occupancy, pending requests, and notices
+                    </div>
+                </li>
+                <li class="feature-item">
+                    <div class="feature-title">
+                        <span class="feature-icon">👥</span> Student Management
+                    </div>
+                    <div class="feature-details">
+                        <div class="feature-detail-item">
+                            <span class="feature-detail-icon">•</span> Add/remove students
+                        </div>
+                        <div class="feature-detail-item">
+                            <span class="feature-detail-icon">•</span> View student details (room allocation, fees, contact info)
+                        </div>
+                    </div>
+                </li>
+                <li class="feature-item">
+                    <div class="feature-title">
+                        <span class="feature-icon">🏠</span> Room Management
+                    </div>
+                    <div class="feature-details">
+                        <div class="feature-detail-item">
+                            <span class="feature-detail-icon">•</span> Allocate/deallocate rooms
+                        </div>
+                        <div class="feature-detail-item">
+                            <span class="feature-detail-icon">•</span> View room availability
+                        </div>
+                    </div>
+                </li>
+                <li class="feature-item">
+                    <div class="feature-title">
+                        <span class="feature-icon">📢</span> Notice Management
+                    </div>
+                    <div class="feature-details">
+                        <div class="feature-detail-item">
+                            <span class="feature-detail-icon">•</span> Post, edit, or delete notices
+                        </div>
+                    </div>
+                </li>
+                <li class="feature-item">
+                    <div class="feature-title">
+                        <span class="feature-icon">🍽️</span> Mess Management
+                    </div>
+                    <div class="feature-details">
+                        <div class="feature-detail-item">
+                            <span class="feature-detail-icon">•</span> Update mess menu
+                        </div>
+                        <div class="feature-detail-item">
+                            <span class="feature-detail-icon">•</span> Manage mess timings
+                        </div>
+                    </div>
+                </li>
+                
+                <li class="feature-item">
+                    <div class="feature-title">
+                        <span class="feature-icon">📝</span> Reports
+                    </div>
+                    <div class="feature-details">
+                        <div class="feature-detail-item">
+                            <span class="feature-detail-icon">•</span> Generate reports (attendance, fees, maintenance)
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer">&copy; 2025 College Hostel Management | ScholarsInn</div>
+</body>
+</html>
